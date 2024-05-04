@@ -1,0 +1,48 @@
+{% set epel= salt['grains.filter_by'] ({
+    'common': {
+      'disabled': False,
+      'testing': False,
+      'retry_options': {
+        'attempts': 3,
+        'until': True,
+        'interval': 10,
+        'splay': 10,
+      },
+    },
+    'Amazon': salt['grains.filter_by']({
+      2: {
+        'key': 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7',
+        'key_hash': 'sha256=028b9accc59bab1d21f2f3f544df5469910581e728a64fd8c411a725a82300c2',
+        'key_name': 'RPM-GPG-KEY-EPEL-7',
+        'rpm': 'http://download.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm',
+      },
+    },
+    grain='osmajorrelease',
+    default='2'),
+    'RedHat': salt['grains.filter_by']({
+      7: {
+        'key': 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7',
+        'key_hash': 'sha256=028b9accc59bab1d21f2f3f544df5469910581e728a64fd8c411a725a82300c2',
+        'key_name': 'RPM-GPG-KEY-EPEL-7',
+        'rpm': 'http://download.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm',
+      },
+      8: {
+        'key': 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-8',
+        'key_hash': 'sha256=cd1db21a863185127f2e3b264c97fb1c6c44c316385707999041ea475c110d1c',
+        'key_name': 'RPM-GPG-KEY-EPEL-8',
+        'rpm': 'http://download.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm',
+      },
+      9: {
+        'key': 'https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9',
+        'key_hash': 'sha256=fcf0eab4f05a1c0de6363ac4b707600a27a9d774e9b491059e59e6921b255a84',
+        'key_name': 'RPM-GPG-KEY-EPEL-9',
+        'rpm': 'https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm',
+      },
+    },
+    grain='osmajorrelease')
+  },
+  grain='os',
+  merge=salt['pillar.get']('epel:lookup'),
+  default='RedHat',
+  base='common' )
+-%}
